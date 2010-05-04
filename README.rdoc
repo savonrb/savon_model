@@ -1,5 +1,95 @@
 = Savon::Model
 ==== Model for SOAP service oriented applications
 
-<tt>Savon::Model</tt> uses +ActiveModel+ (introduced by Rails 3) to create a pretty basic layer
-for working with service oriented applications that are using SOAP services.
+<tt>Savon::Model</tt> uses +ActiveModel+ (introduced by Rails 3) and the +Savon+ SOAP client library to create
+a pretty basic layer for working with service oriented applications. The intention is to create models that look
+like they're attached to a database, but use webservices to do the heavy lifting.
+
+== An example
+
+A simple <tt>Savon::Model</tt> talking to a user webservice might look like this:
+
+  class User < Savon::Model
+    
+    client :user_service,
+      :endpoint => "http://user_service.example.com",
+      :namespace => "http://v1.user_service.example.com"
+    
+    # Returns an Array of users.
+    def self.all
+      get_users!.map { |user| new user }
+    end
+    
+    attr_accessor :id, :name, :email
+    
+  private
+    
+    # Returns an Array of users from the user webservice.
+    def self.get_users!
+      response = client(:user_service).get_users!
+      user_hash = response.to_hash[:get_users_response][:return]
+      
+      return [] unless users
+      users.kind_of?(Array) ? users : [users]
+    end
+    
+  end
+
+=== The +client+ method
+
+The +client+ class method is used to set up a <tt>Savon::Client</tt> to be used in your model. It accepts a Hash
+of options containing of the SOAP endpoint (:endpoint) and the namespace of your service (:namespace):
+
+  client :user_service,
+    :endpoint => "http://user_service.example.com",
+    :namespace => "http://v1.user_service.example.com"
+
+The +client+ method can also be used as a getter/reader method on the class and instance level to retrieve a
+previously specified <tt>Savon::Client</tt> and call methods on a webservice:
+
+  response = client(:user_service).get_users!
+
+=== The <tt>Savon::Response</tt>
+
+In the previous example, the <tt>get_users!</tt> method called on the <tt>Savon::Client</tt> returned by the
++client+ method returns a <tt>Savon::Response</tt> object. You can then check for SOAP and HTTP errors or
+simply convert the SOAP response to a +Hash+ and extract the information you need:
+
+  user_hash = response.to_hash[:get_users_response][:return]
+
+The <tt>get_users!</tt> class method calling the webservice in this example is marked private, named after the
+SOAP action it's calling and the exclamation mark indicates that it has a side-effect (calling the webservice).
+This is not required, but I think it's a pretty neat convention:
+
+=== The <tt>UsersController</tt>
+
+Setting up a <tt>Savon::Model</tt> like this makes your controller look like it's dealing with some kind of
++ActiveRecord+ object:
+
+  class UsersController < ApplicationController
+    
+    def index
+      @users = User.all
+    end
+    
+  end
+
+Calling <tt>User.all</tt> will return an Array of +User+ objects.
+
+== Instantiating a <tt>Savon::Model</tt>
+
+When instantiating a <tt>Savon::Model</tt>, you can pass in a Hash of attributes which get stored as instance
+variables:
+
+  user = User.new :id => 1, :name => "Eve", :email => "eve@example.com"
+
+And since we specified accessors for these attributes, we can ask the +User+ object for its name:
+
+  user.name  # => "Eve"
+
+== ActiveModel features
+
+<tt>Savon::Model</tt> includes the following +ActiveModel+ features:
+
+* <tt>ActiveModel::Conversion</tt>
+* <tt>ActiveModel::Validations</tt>
