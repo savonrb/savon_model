@@ -1,9 +1,10 @@
 = Savon::Model
 ==== Model for SOAP service oriented applications
 
-Savon::Model uses ActiveModel (introduced by Rails 3) and the Savon SOAP client library to create a pretty
-basic layer for working with service oriented applications. The intention is to create models that look like
-they're attached to a database, but use webservices to do the heavy lifting.
+Savon::Model uses {ActiveModel}[http://rubygems.org/gems/activemodel] (introduced by Rails 3) and the
+{Savon}[http://rubygems.org/gems/savon] SOAP client library to create a pretty basic layer for working
+with service oriented applications. The intention is to create models that look like they're attached
+to a database, but use webservices to do the heavy lifting.
 
 == An example
 
