@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Savon::Model do
 
-  describe "client (class method)" do
+  describe ".client" do
     before(:all) do
       @client = User.client :user_service,
         :endpoint => "http://example.com",
@@ -26,7 +26,7 @@ describe Savon::Model do
     end
   end
 
-  describe "client (instance method)" do
+  describe "#client" do
     it "should return the Savon::Client stored under a certain name" do
       User.client :user_service,
         :endpoint => "http://example.com",
