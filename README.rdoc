@@ -12,8 +12,8 @@ A simple Savon::Model talking to a user webservice might look like this:
   class User < Savon::Model
     
     client :user_service,
-      :endpoint => "http://user_service.example.com",
-      :namespace => "http://v1.user_service.example.com"
+      :endpoint => "http://example.com",
+      :namespace => "http://user_service.example.com"
     
     # Returns an Array of users.
     def self.all
@@ -59,7 +59,7 @@ and extract the information you need:
 
 The get_users! class method calling the webservice in this example is marked private, named after the SOAP action
 it's calling and the exclamation mark indicates that it has a side-effect (calling the webservice). This is not
-required, but I think it's a pretty neat convention:
+required, but I think it's a pretty neat convention.
 
 === The UsersController
 
@@ -87,7 +87,6 @@ And since we specified accessors for these attributes, we can ask the User objec
 
 == ActiveModel features
 
-Savon::Model includes the following ActiveModel features:
+Currently Savon::Model includes the following ActiveModel features:
 
-* ActiveModel::Conversion
 * ActiveModel::Validations
