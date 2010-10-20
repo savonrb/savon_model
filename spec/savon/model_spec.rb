@@ -1,48 +1,62 @@
 require "spec_helper"
+require "savon/model"
 
 describe Savon::Model do
+  let :model do
+    Class.new { include Savon::Model }
+  end
 
   describe ".client" do
-    before(:all) do
-      @client = User.client :user_service,
-        :endpoint => "http://example.com",
-        :namespace => "http://user_service.example.com"
+    it "should should pass a given block to a new Savon::Client"
+
+    it "should memoize the Savon::Client" do
+      model.client.should equal(model.client)
+    end
+  end
+
+  describe ".endpoint" do
+    it "should set the SOAP endpoint" do
+      model.endpoint "http://example.com"
+      model.client.wsdl.endpoint.should == "http://example.com"
+    end
+  end
+
+  describe ".namespace" do
+    it "should set the target namespace" do
+      model.namespace "http://v1.example.com"
+      model.client.wsdl.namespace.should == "http://v1.example.com"
+    end
+  end
+
+  describe ".actions" do
+    before(:all) { model.actions :get_user, :get_all_users }
+
+    it "should define class methods each action" do
+      model.should respond_to(:get_user, :get_all_users)
     end
 
-    it "should store Savon::Client objects for a given name and options" do
-      @client.should be_a(Savon::Client)
+    it "should define instance methods each action" do
+      model.new.should respond_to(:get_user, :get_all_users)
     end
 
-    it "should set the endpoint specified through the Hash of options" do
-      @client.request.endpoint.should == URI("http://example.com")
+    context "(class-level)" do
+      it "should execute SOAP requests with a given body" do
+        model.client.expects(:request).with(:wsdl, :get_user, :body => { :id => 1 })
+        model.get_user :id => 1
+      end
     end
 
-    it "should set the namespace specified through the Hash of options" do
-      Savon::SOAP.namespaces["xmlns:wsdl"].should == "http://user_service.example.com"
-    end
-
-    it "should return the Savon::Client stored under a certain name" do
-      User.client(:user_service).should be_a(Savon::Client)
+    context "(instance-level)" do
+      it "should delegate to the corresponding class method" do
+        model.expects(:get_all_users).with(:active => true)
+        model.new.get_all_users :active => true
+      end
     end
   end
 
   describe "#client" do
-    it "should return the Savon::Client stored under a certain name" do
-      User.client :user_service,
-        :endpoint => "http://example.com",
-        :namespace => "http://user_service.example.com"
-      
-      User.new.client(:user_service).should be_a(Savon::Client)
-    end
-  end
-
-  describe "initialize" do
-    it "should accept a Hash of attributes and assign them to instance variables" do
-      user = User.new :id => 1, :name => "Eve", :email => "eve@example.com"
-      
-      user.id.should == 1
-      user.name.should == "Eve"
-      user.email.should == "eve@example.com"
+    it "should return the class-level Savon::Client" do
+      model.new.client.should == model.client
     end
   end
 

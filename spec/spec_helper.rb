@@ -1,6 +1,6 @@
-require "spec"
-require "savon_model"
+require "rspec"
+require "mocha"
 
-class User < Savon::Model
-  attr_accessor :id, :name, :email
+RSpec.configure do |config|
+  config.mock_with :mocha
 end

@@ -1,20 +1,65 @@
-require "savon/model_methods/mass_assignment"
-require "savon/model_methods/client"
-
-require "active_model"
+require "savon"
+require "savon/ext/response"
 
 module Savon
+  module Model
 
-  # = Savon::Model
-  # ==== Model for SOAP service oriented applications
-  #
-  # Savon::Model uses ActiveModel (introduced by Rails 3) and the Savon SOAP client library to create a pretty basic
-  # layer for working with service oriented applications. The intention is to create models that look like they're
-  # attached to a database, but use webservices to do the heavy lifting.
-  class Model
-    include Savon::ModelMethods::MassAssignment
-    include Savon::ModelMethods::Client
-    include ActiveModel::Validations
+    VERSION = "0.1.0"
+
+    class << self
+
+      def response_pattern
+        @response_pattern ||= []
+      end
+
+      attr_writer :response_pattern
+
+    end
+
+    module ClassMethods
+
+      def client(&block)
+        @client ||= Savon::Client.new &block
+      end
+
+      def endpoint(uri)
+        client.wsdl.endpoint = uri
+      end
+
+      def namespace(uri)
+        client.wsdl.namespace = uri
+      end
+
+      def actions(*args)
+        args.each do |arg|
+          define_class_action arg
+          define_instance_action arg
+        end
+      end
+
+    private
+
+      def define_class_action(action)
+        self.class.send :define_method, action do |body|
+          client.request :wsdl, action, :body => body
+        end
+      end
+
+      def define_instance_action(action)
+        define_method action do |body|
+          self.class.send action, body
+        end
+      end
+
+    end
+
+    def self.included(base)
+      base.extend ClassMethods
+    end
+
+    def client
+      self.class.client
+    end
+
   end
-
 end

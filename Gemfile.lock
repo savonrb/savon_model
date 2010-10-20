@@ -1,0 +1,39 @@
+PATH
+  remote: .
+  specs:
+    savon_model (0.1.0)
+
+GEM
+  remote: http://gems.blau.de/
+  remote: http://rubygems.org/
+  specs:
+    builder (2.1.2)
+    crack (0.1.8)
+    diff-lcs (1.1.2)
+    httpi (0.6.0)
+    mocha (0.9.8)
+      rake
+    rake (0.8.7)
+    rspec (2.0.0)
+      rspec-core (= 2.0.0)
+      rspec-expectations (= 2.0.0)
+      rspec-mocks (= 2.0.0)
+    rspec-core (2.0.0)
+    rspec-expectations (2.0.0)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.0)
+      rspec-core (= 2.0.0)
+      rspec-expectations (= 2.0.0)
+    savon (0.8.0.alpha.1)
+      builder (~> 2.1.2)
+      crack (~> 0.1.8)
+      httpi (>= 0.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mocha (~> 0.9.8)
+  rspec (~> 2.0.0)
+  savon (~> 0.8.0.alpha.1)
+  savon_model!
