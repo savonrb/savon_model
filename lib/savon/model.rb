@@ -40,15 +40,19 @@ module Savon
     private
 
       def define_class_action(action)
-        self.class.send :define_method, action do |body|
-          client.request :wsdl, action, :body => body
-        end
+        instance_eval %Q{
+          def #{action}(body = nil, &block)
+            client.request :wsdl, :#{action}, :body => body, &block
+          end
+        }
       end
 
       def define_instance_action(action)
-        define_method action do |body|
-          self.class.send action, body
-        end
+        class_eval %Q{
+          def #{action}(body = nil, &block)
+            self.class.#{action} body, &block
+          end
+        }
       end
 
     end
