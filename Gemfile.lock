@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    savon_model (0.1.0)
+    savon_model (0.1.2)
 
 GEM
   remote: http://gems.blau.de/
@@ -11,19 +11,19 @@ GEM
     crack (0.1.8)
     diff-lcs (1.1.2)
     httpi (0.6.0)
-    mocha (0.9.8)
+    mocha (0.9.9)
       rake
     rake (0.8.7)
-    rspec (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-      rspec-mocks (= 2.0.0)
-    rspec-core (2.0.0)
-    rspec-expectations (2.0.0)
+    rspec (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+      rspec-mocks (~> 2.0.1)
+    rspec-core (2.0.1)
+    rspec-expectations (2.0.1)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
+    rspec-mocks (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
     savon (0.8.0.alpha.2)
       builder (~> 2.1.2)
       crack (~> 0.1.8)
