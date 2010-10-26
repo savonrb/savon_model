@@ -19,7 +19,7 @@ module Savon
     module ClassMethods
 
       def client(&block)
-        @client ||= Savon::Client.new &block
+        @@client ||= Savon::Client.new &block
       end
 
       def endpoint(uri)

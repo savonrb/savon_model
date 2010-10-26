@@ -12,6 +12,11 @@ describe Savon::Model do
     it "should memoize the Savon::Client" do
       model.client.should equal(model.client)
     end
+
+    it "should memoize the Savon::Client when inherited" do
+      supermodel = Class.new model
+      supermodel.client.should equal(model.client)
+    end
   end
 
   describe ".endpoint" do
