@@ -5,7 +5,7 @@ module Savon
   module SOAP
     class Response
 
-      # Returns the +original_hash+ 
+      # Returns the original result of <tt>Savon::SOAP::Response#to_hash</tt>.
       def new_hash
         @new_hash ||= response_pattern original_hash
       end
@@ -13,6 +13,7 @@ module Savon
       alias_method :original_hash, :to_hash
       alias_method :to_hash, :new_hash
 
+      # Returns the response Hash as an Array.
       def to_array
         @array ||= begin
           array = to_hash.kind_of?(Array) ? to_hash : [to_hash]

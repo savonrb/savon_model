@@ -2,34 +2,47 @@ require "savon"
 require "savon/ext/response"
 
 module Savon
+
+  # = Savon::Model
+  #
+  # Model for SOAP service oriented applications.
   module Model
 
     VERSION = "0.1.2"
 
     class << self
 
+      # Returns the response pattern to apply.
       def response_pattern
         @response_pattern ||= []
       end
 
+      # Sets the response pattern. This is required to be an Array of Regexps or Symbols.
       attr_writer :response_pattern
 
     end
 
     module ClassMethods
 
+      # Returns a memoized <tt>Savon::Client</tt> instance. Accepts a block and passes it
+      # to <tt>Savon::Client.new</tt> when called for the first time.
       def client(&block)
         @@client ||= Savon::Client.new &block
       end
 
+      # Sets the SOAP endpoint.
       def endpoint(uri)
         client.wsdl.endpoint = uri
       end
 
+      # Sets the target namespace.
       def namespace(uri)
         client.wsdl.namespace = uri
       end
 
+      # Accepts one or more SOAP actions and generates both class and instance methods named
+      # after the given actions. Each generated method accepts an optional SOAP body Hash and
+      # a block to be passed to <tt>Savon::Client#request</tt> and executes a SOAP request.
       def actions(*args)
         args.each do |arg|
           define_class_action arg
@@ -61,6 +74,7 @@ module Savon
       base.extend ClassMethods
     end
 
+    # Returns a memoized <tt>Savon::Client</tt> instance.
     def client
       self.class.client
     end
