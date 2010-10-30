@@ -8,7 +8,7 @@ module Savon
   # Model for SOAP service oriented applications.
   module Model
 
-    VERSION = "0.1.2"
+    VERSION = "0.2.0"
 
     class << self
 
