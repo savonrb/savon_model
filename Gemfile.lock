@@ -24,7 +24,7 @@ GEM
     rspec-mocks (2.0.1)
       rspec-core (~> 2.0.1)
       rspec-expectations (~> 2.0.1)
-    savon (0.8.0.alpha.2)
+    savon (0.8.0.beta.1)
       builder (~> 2.1.2)
       crack (~> 0.1.8)
       httpi (>= 0.6.0)
@@ -35,5 +35,5 @@ PLATFORMS
 DEPENDENCIES
   mocha (~> 0.9.8)
   rspec (~> 2.0.0)
-  savon (~> 0.8.0.alpha.1)
+  savon (~> 0.8.0.beta.1)
   savon_model!
