@@ -54,16 +54,16 @@ module Savon
 
       def define_class_action(action)
         instance_eval %Q{
-          def #{action}(body = nil, &block)
-            client.request :wsdl, :#{action}, :body => body, &block
+          def #{action.to_s.snakecase}(body = nil, &block)
+            client.request :wsdl, #{action.inspect}, :body => body, &block
           end
         }
       end
 
       def define_instance_action(action)
         class_eval %Q{
-          def #{action}(body = nil, &block)
-            self.class.#{action} body, &block
+          def #{action.to_s.snakecase}(body = nil, &block)
+            self.class.#{action.to_s.snakecase} body, &block
           end
         }
       end

@@ -34,7 +34,7 @@ describe Savon::Model do
   end
 
   describe ".actions" do
-    before(:all) { model.actions :get_user, :get_all_users }
+    before(:all) { model.actions :get_user, "GetAllUsers" }
 
     it "should define class methods each action" do
       model.should respond_to(:get_user, :get_all_users)
@@ -48,6 +48,11 @@ describe Savon::Model do
       it "should execute SOAP requests with a given body" do
         model.client.expects(:request).with(:wsdl, :get_user, :body => { :id => 1 })
         model.get_user :id => 1
+      end
+
+      it "should accept and pass Strings for action names" do
+        model.client.expects(:request).with(:wsdl, "GetAllUsers", :body => { :id => 1 })
+        model.get_all_users :id => 1
       end
     end
 
