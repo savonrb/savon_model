@@ -1,5 +1,4 @@
 require "savon"
-require "savon/ext/response"
 
 module Savon
 
@@ -8,19 +7,7 @@ module Savon
   # Model for SOAP service oriented applications.
   module Model
 
-    VERSION = "0.2.0"
-
-    class << self
-
-      # Returns the response pattern to apply.
-      def response_pattern
-        @response_pattern ||= []
-      end
-
-      # Sets the response pattern. This is required to be an Array of Regexps or Symbols.
-      attr_writer :response_pattern
-
-    end
+    VERSION = "0.3.0"
 
     module ClassMethods
 

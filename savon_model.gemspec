@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = s.name
 
-  s.add_development_dependency "savon", "~> 0.8.0.beta.1"
+  s.add_development_dependency "savon", "~> 0.8.0.beta.2"
 
   s.add_development_dependency "rspec", "~> 2.0.0"
   s.add_development_dependency "mocha", "~> 0.9.8"
