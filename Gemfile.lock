@@ -9,7 +9,7 @@ GEM
     builder (2.1.2)
     crack (0.1.8)
     diff-lcs (1.1.2)
-    httpi (0.6.1)
+    httpi (0.7.0)
     mocha (0.9.9)
       rake
     rake (0.8.7)
@@ -23,12 +23,13 @@ GEM
     rspec-mocks (2.0.1)
       rspec-core (~> 2.0.1)
       rspec-expectations (~> 2.0.1)
-    savon (0.8.0.beta.1)
+    savon (0.8.0.beta.3)
       builder (~> 2.1.2)
       crack (~> 0.1.8)
       httpi (>= 0.6.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
