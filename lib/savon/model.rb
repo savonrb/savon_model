@@ -14,7 +14,7 @@ module Savon
       # Returns a memoized <tt>Savon::Client</tt> instance. Accepts a block and passes it
       # to <tt>Savon::Client.new</tt> when called for the first time.
       def client(&block)
-        @@client ||= Savon::Client.new &block
+        @client ||= Savon::Client.new &block
       end
 
       # Sets the SOAP endpoint.
