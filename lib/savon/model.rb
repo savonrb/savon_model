@@ -7,7 +7,7 @@ module Savon
   # Model for SOAP service oriented applications.
   module Model
 
-    VERSION = "0.3.0"
+    VERSION = "0.3.1"
 
     module ClassMethods
 
