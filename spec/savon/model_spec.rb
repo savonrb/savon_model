@@ -2,9 +2,7 @@ require "spec_helper"
 require "savon/model"
 
 describe Savon::Model do
-  let :model do
-    Class.new { include Savon::Model }
-  end
+  let(:model) { Class.new { include Savon::Model } }
 
   describe ".client" do
     it "should should pass a given block to a new Savon::Client"
@@ -62,6 +60,65 @@ describe Savon::Model do
   describe "#client" do
     it "should return the class-level Savon::Client" do
       model.new.client.should == model.client
+    end
+  end
+
+  describe "#endpoint" do
+    it "should delegate to .endpoint" do
+      model.expects(:endpoint).with("http://example.com")
+      model.new.endpoint "http://example.com"
+    end
+  end
+
+  describe "#namespace" do
+    it "should delegate to .namespace" do
+      model.expects(:namespace).with("http://v1.example.com")
+      model.new.namespace "http://v1.example.com"
+    end
+  end
+
+  describe "overwriting action methods" do
+    context "(class-level)" do
+      let :supermodel do
+        supermodel = model.dup
+        supermodel.actions :get_user
+
+        def supermodel.get_user(body = nil, &block)
+          p "super"
+          super
+        end
+
+        supermodel
+      end
+
+      it "should be possible" do
+        supermodel.client.expects(:request).with(:wsdl, :get_user, :body => { :id => 1 })
+        supermodel.expects(:p).with("super")  # stupid, but works
+
+        supermodel.get_user :id => 1
+      end
+    end
+
+    context "(instance-level)" do
+      let :supermodel do
+        supermodel = model.dup
+        supermodel.actions :get_user
+        supermodel = supermodel.new
+
+        def supermodel.get_user(body = nil, &block)
+          p "super"
+          super
+        end
+
+        supermodel
+      end
+
+      it "should be possible" do
+        supermodel.client.expects(:request).with(:wsdl, :get_user, :body => { :id => 1 })
+        supermodel.expects(:p).with("super")  # stupid, but works
+
+        supermodel.get_user :id => 1
+      end
     end
   end
 
