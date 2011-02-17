@@ -4,6 +4,17 @@ require "savon/model"
 describe Savon::Model do
   let(:model) { Class.new { include Savon::Model } }
 
+  describe ".handle_response" do
+    before(:all) { model.actions :get_user, "GetAllUsers" }
+
+    it "should be used for pre-processing SOAP responses" do
+      Savon::Model.handle_response = lambda { |response| response }
+
+      model.client.stubs(:request).returns("response")
+      model.get_user.should == "response"
+    end
+  end
+
   describe ".client" do
     it "should should pass a given block to a new Savon::Client"
 

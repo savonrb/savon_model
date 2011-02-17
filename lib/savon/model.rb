@@ -9,6 +9,14 @@ module Savon
 
     VERSION = "0.3.1"
 
+    def self.handle_response=(recipe)
+      @handle_response = recipe
+    end
+
+    def self.handle_response
+      @handle_response
+    end
+
     module ClassMethods
 
       def self.extend_object(base)
@@ -36,7 +44,8 @@ module Savon
       def define_class_action(action)
         class_action_module.module_eval <<-CODE
           def #{action.to_s.snakecase}(body = nil, &block)
-            client.request :wsdl, #{action.inspect}, :body => body, &block
+            response = client.request :wsdl, #{action.inspect}, :body => body, &block
+            Savon::Model.handle_response ? Savon::Model.handle_response.call(response) : response
           end
         CODE
       end
