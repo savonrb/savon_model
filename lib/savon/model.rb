@@ -100,7 +100,7 @@ module Savon
           end
           
           def basic_auth(login, password)
-            self.basic_auth login, password
+            self.class.basic_auth login, password
           end
 
           def namespace(uri)
