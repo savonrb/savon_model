@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = s.name
 
+  s.add_dependency "httpi", ">= 0.7.8"
   s.add_dependency "savon", ">= 0.8.2"
 
   s.add_development_dependency "rspec", "~> 2.4.0"
