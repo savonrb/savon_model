@@ -7,8 +7,6 @@ module Savon
   # Model for SOAP service oriented applications.
   module Model
 
-    VERSION = "0.4.1"
-
     def self.handle_response=(recipe)
       @handle_response = recipe
     end
