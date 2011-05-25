@@ -23,9 +23,10 @@ Getting started
       end
 
       document "http://example.com/users?wsdl"                [2.0]
-      basic_auth "login", "password"                                   [2.1]
-      endpoint "http://example.com/users"                          [2.2]
-      namespace "http://v1.example.com/users"                  [3]
+      basic_auth "login", "password"                          [2.1]
+      endpoint "http://example.com/users"                     [2.2]
+
+      namespace "http://v1.example.com/users"                 [3]
 
       actions :get_user, :get_all_users                       [4]
 
