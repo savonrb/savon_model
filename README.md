@@ -26,23 +26,23 @@ Getting started
 
       document "http://example.com/users?wsdl"                [2]
 
-      endpoint "http://example.com/users"                     [2.1]
-      namespace "http://v1.example.com/users"                 [2.2]
+      endpoint "http://example.com/users"                     [3]
+      namespace "http://v1.example.com/users"                 [4]
 
-      basic_auth "login", "password"                          [3]
+      basic_auth "login", "password"                          [5]
 
-      actions :get_user, :get_all_users                       [4]
+      actions :get_user, :get_all_users                       [6]
 
       def self.all
-        get_all_users.to_array                                [5]
+        get_all_users.to_array                                [7]
       end
 
       def self.find(id)
-        get_user(:id => id).to_hash                           [6]
+        get_user(:id => id).to_hash                           [8]
       end
 
       def self.delete(id)
-        client.request(:delete_user) do                       [7]
+        client.request(:delete_user) do                       [9]
           soap.body = { :id => 1 }
         end.to_hash
       end
@@ -54,18 +54,18 @@ Getting started
 
 2. Sets the WSDL document.
 
-2.1. Sets the SOAP endpoint.
-2.2. Sets the target namespace.
+3. Sets the SOAP endpoint.
+4. Sets the target namespace.
 
-3. Sets basic auth credentials.
+5. Sets basic auth credentials.
 
-4. Specifies the SOAP actions provided by the service. This method dynamically creates both class
+6. Specifies the SOAP actions provided by the service. This method dynamically creates both class
    and instance methods named after the arguments. These methods accept an optional SOAP body Hash
    or XML String to be passed to the `Savon::Client` instance.
 
-5. `User.all` calls the `get_all_users` SOAP action and returns a `Savon::Response`.
+7. `User.all` calls the `get_all_users` SOAP action and returns a `Savon::Response`.
 
-6. `User.find` calls the `get_user` SOAP action with a SOAP body Hash and returns a `Savon::Response`.
+8. `User.find` calls the `get_user` SOAP action with a SOAP body Hash and returns a `Savon::Response`.
 
-7. This is an example of what happens "behind the scenes" on [6]. You can always use the `client`
+9. This is an example of what happens "behind the scenes" on [6]. You can always use the `client`
    method to directly access and use the `Savon::Client` instance.
