@@ -1,4 +1,4 @@
-Savon::Model
+Savon::Model [![Build Status](http://travis-ci.org/rubiii/savon_model.png)](http://travis-ci.org/rubiii/savon_model)
 ============
 
 Model for SOAP service oriented applications.
