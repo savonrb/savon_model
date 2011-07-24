@@ -33,7 +33,7 @@ describe Savon::Model do
   describe ".document" do
     it "should set WSDL document" do
       model.document "http://example.com/?wsdl"
-      model.client.wsdl.document.should == ""
+      model.client.wsdl.document.should == "http://example.com/?wsdl"
     end
   end
 
