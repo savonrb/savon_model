@@ -66,6 +66,14 @@ module Savon
           def endpoint(uri)
             client.wsdl.endpoint = uri
           end
+          
+          def document(uri)
+            client.wsdl.document = uri
+          end
+          
+          def basic_auth(login, password)
+            client.http.auth.basic login, password
+          end
 
           def namespace(uri)
             client.wsdl.namespace = uri
@@ -83,6 +91,14 @@ module Savon
 
           def endpoint(uri)
             self.class.endpoint uri
+          end
+          
+          def document(uri)
+            self.class.document uri
+          end
+          
+          def basic_auth(login, password)
+            self.class.basic_auth login, password
           end
 
           def namespace(uri)

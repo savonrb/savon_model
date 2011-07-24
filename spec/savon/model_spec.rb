@@ -30,6 +30,20 @@ describe Savon::Model do
     end
   end
 
+  describe ".document" do
+    it "should set WSDL document" do
+      model.document "http://example.com/?wsdl"
+      model.client.wsdl.document.should == ""
+    end
+  end
+
+  describe ".basic_auth" do
+    it "should set HTTP Basic auth credentials" do
+      model.basic_auth "login", "password"
+      puts model.client.http.auth.basic.should == ["login", "password"]
+    end
+  end
+
   describe ".namespace" do
     it "should set the target namespace" do
       model.namespace "http://v1.example.com"
