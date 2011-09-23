@@ -75,6 +75,10 @@ module Savon
             client.http.auth.basic login, password
           end
 
+          def wsse_auth(*args)
+            client.wsse.credentials(*args)
+          end
+
           def namespace(uri)
             client.wsdl.namespace = uri
           end

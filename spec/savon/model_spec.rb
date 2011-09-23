@@ -44,6 +44,16 @@ describe Savon::Model do
     end
   end
 
+  describe ".wsse_auth" do
+    it "should set WSSE auth credentials" do
+      model.wsse_auth "login", "password", :digest
+
+      model.client.wsse.username.should == "login"
+      model.client.wsse.password.should == "password"
+      model.client.wsse.should be_digest
+    end
+  end
+
   describe ".namespace" do
     it "should set the target namespace" do
       model.namespace "http://v1.example.com"
