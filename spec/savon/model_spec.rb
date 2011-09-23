@@ -126,24 +126,6 @@ describe Savon::Model do
 
   end
 
-  describe "#endpoint" do
-
-    it "delegates to .endpoint" do
-      model.expects(:endpoint).with("http://example.com")
-      model.new.endpoint "http://example.com"
-    end
-
-  end
-
-  describe "#namespace" do
-
-    it "delegates to .namespace" do
-      model.expects(:namespace).with("http://v1.example.com")
-      model.new.namespace "http://v1.example.com"
-    end
-
-  end
-
   describe "overwriting action methods" do
 
     context "(class-level)" do

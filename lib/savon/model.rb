@@ -93,22 +93,6 @@ module Savon
             self.class.client &block
           end
 
-          def endpoint(uri)
-            self.class.endpoint uri
-          end
-
-          def document(uri)
-            self.class.document uri
-          end
-
-          def basic_auth(login, password)
-            self.class.basic_auth login, password
-          end
-
-          def namespace(uri)
-            self.class.namespace uri
-          end
-
         end.tap { |mod| include mod }
       end
 
