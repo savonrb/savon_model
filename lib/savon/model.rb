@@ -40,20 +40,20 @@ module Savon
     private
 
       def define_class_action(action)
-        class_action_module.module_eval <<-CODE
+        class_action_module.module_eval %{
           def #{action.to_s.snakecase}(body = nil, &block)
             response = client.request :wsdl, #{action.inspect}, :body => body, &block
             Savon::Model.handle_response ? Savon::Model.handle_response.call(response) : response
           end
-        CODE
+        }
       end
 
       def define_instance_action(action)
-        instance_action_module.module_eval <<-CODE
+        instance_action_module.module_eval %{
           def #{action.to_s.snakecase}(body = nil, &block)
             self.class.#{action.to_s.snakecase} body, &block
           end
-        CODE
+        }
       end
 
       def class_action_module
