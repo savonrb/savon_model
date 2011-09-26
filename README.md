@@ -1,71 +1,153 @@
-Savon::Model [![Build Status](http://travis-ci.org/rubiii/savon_model.png)](http://travis-ci.org/rubiii/savon_model)
+Savon::Model [![Build Status](https://secure.travis-ci.org/rubiii/savon_model.png)](http://travis-ci.org/rubiii/savon_model)
 ============
 
 Model for SOAP service oriented applications.
-
-[Bugs](http://github.com/rubiii/savon_model/issues) | [Docs](http://rubydoc.info/gems/savon_model/frames)
 
 
 Installation
 ------------
 
-The gem is available through [Rubygems](http://rubygems.org/gems/savon_model) and can be installed via:
+Savon::Model is available through [Rubygems](http://rubygems.org/gems/savon_model) and can be installed via:
 
-    $ gem install savon_model
+``` bash
+$ gem install savon_model
+```
 
 
-Getting started
----------------
+Include
+-------
 
-    class User
-      include Savon::Model
+Savon::Model comes with quite a few handy class and instance methods for using [Savon](https://github.com/rubiii/savon)
+inside your SOAP model classes. Simply include the module in any of your classes to get started.
 
-      client do                                               [1]
-        http.headers["Pragma"] = "no-cache"
-      end
+``` ruby
+require "savon_model"
 
-      document "http://example.com/users?wsdl"                [2]
+class User
+  include Savon::Model
+end
+```
 
-      endpoint "http://example.com/users"                     [3]
-      namespace "http://v1.example.com/users"                 [4]
 
-      basic_auth "login", "password"                          [5]
+Service
+-------
 
-      actions :get_user, :get_all_users                       [6]
+You can configure Savon to work with or without a WSDL document with the `.document`, `.endpoint` and `.namespace`
+class methods. Point Savon to the WSDL of your service:
 
-      def self.all
-        get_all_users.to_array                                [7]
-      end
+``` ruby
+class User
+  include Savon::Model
 
-      def self.find(id)
-        get_user(:id => id).to_hash                           [8]
-      end
+  document "http://service.example.com?wsdl"
+end
+```
 
-      def self.delete(id)
-        client.request(:delete_user) do                       [9]
-          soap.body = { :id => 1 }
-        end.to_hash
-      end
+or set the SOAP endpoint and target namespace to bypass the WSDL:
+
+``` ruby
+class User
+  include Savon::Model
+
+  endpoint "http://service.example.com"
+  namespace "http://v1.service.example.com"
+end
+```
+
+
+Authentication
+--------------
+
+Set your HTTP basic authentication username and password via the `.basic_auth` method:
+
+``` ruby
+class User
+  include Savon::Model
+
+  basic_auth "login", "password"
+end
+```
+
+or use the `.wsse_auth` method to set your WSSE username, password and (optional) whether or not to use digest authentication.
+
+``` ruby
+class User
+  include Savon::Model
+
+  wsse_auth "login", "password", :digest
+end
+```
+
+
+Actions
+-------
+
+Define the service methods you're working with via the .actions` class method. Savon::Model creates both class and instance
+methods for every action. These methods accept a SOAP body Hash and return a `Savon::SOAP::Response` for you to use.
+You can wrap those methods in other methods:
+
+``` ruby
+class User
+  include Savon::Model
+
+  actions :get_user, :get_all_users
+
+  def self.all
+    get_all_users.to_array
+  end
+
+end
+```
+
+or extend them by delegating to `super`:
+
+``` ruby
+class User
+  include Savon::Model
+
+  actions :get_user, :get_all_users
+
+  def get_user(id)
+    super(:user_id => id).to_hash[:get_user_response][:return]
+  end
+
+end
+```
+
+
+Else
+----
+
+The `Savon::Client` instance used in your model lives at `.client` inside your class. It gets initialized lazily whenever
+you call any other class or instance method that tries to access the client. In case you need to control how the client
+gets initialized, you can pass a block to `.client` before it's memoized:
+
+``` ruby
+class User
+  include Savon::Model
+
+  client do
+    http.headers["Pragma"] = "no-cache"
+  end
+
+end
+```
+
+You can also bypass Savon::Model and directly use the client:
+
+``` ruby
+class User
+  include Savon::Model
+
+  document "http://service.example.com?wsdl"
+
+  def find_by_id(id)
+    response = client.request(:find_user) do
+      soap.body = { :id => id }
     end
 
-1. You can call the `client` method with a block of settings to be passed to `Savon::Client.new`.
-   The `client` method memoizes a `Savon::Client` instance, so you need to call this method before
-   it gets called by any other method.
+    response.body[:find_user_response][:return]
+  end
 
-2. Sets the WSDL document.
-
-3. Sets the SOAP endpoint.
-4. Sets the target namespace.
-
-5. Sets basic auth credentials.
-
-6. Specifies the SOAP actions provided by the service. This method dynamically creates both class
-   and instance methods named after the arguments. These methods accept an optional SOAP body Hash
-   or XML String to be passed to the `Savon::Client` instance.
-
-7. `User.all` calls the `get_all_users` SOAP action and returns a `Savon::Response`.
-
-8. `User.find` calls the `get_user` SOAP action with a SOAP body Hash and returns a `Savon::Response`.
-
-9. This is an example of what happens "behind the scenes" on [6]. You can always use the `client`
-   method to directly access and use the `Savon::Client` instance.
+end
+```
