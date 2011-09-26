@@ -17,8 +17,8 @@ $ gem install savon_model
 Include
 -------
 
-Savon::Model comes with quite a few handy class and instance methods for using [Savon](https://github.com/rubiii/savon)
-inside your SOAP model classes. Simply include the module in any of your classes to get started.
+Savon::Model comes with quite a few handy class and instance methods for using [Savon](https://github.com/rubiii/savon) inside your SOAP model classes.  
+Simply include the module in any of your classes to get started.
 
 ``` ruby
 require "savon_model"
@@ -32,8 +32,8 @@ end
 Service
 -------
 
-You can configure Savon to work with or without a WSDL document with the `.document`, `.endpoint` and `.namespace`
-class methods. Point Savon to the WSDL of your service:
+You can configure Savon to work with or without a WSDL document with the `.document`, `.endpoint` and `.namespace` class methods.  
+Point Savon to the WSDL of your service:
 
 ``` ruby
 class User
@@ -82,8 +82,8 @@ end
 Actions
 -------
 
-Define the service methods you're working with via the .actions` class method. Savon::Model creates both class and instance
-methods for every action. These methods accept a SOAP body Hash and return a `Savon::SOAP::Response` for you to use.
+Define the service methods you're working with via the `.actions` class method. Savon::Model creates both class and instance  
+methods for every action. These methods accept a SOAP body Hash and return a `Savon::SOAP::Response` for you to use.  
 You can wrap those methods in other methods:
 
 ``` ruby
@@ -118,9 +118,9 @@ end
 Else
 ----
 
-The `Savon::Client` instance used in your model lives at `.client` inside your class. It gets initialized lazily whenever
-you call any other class or instance method that tries to access the client. In case you need to control how the client
-gets initialized, you can pass a block to `.client` before it's memoized:
+The `Savon::Client` instance used in your model lives at `.client` inside your class. It gets initialized lazily whenever you call  
+any other class or instance method that tries to access the client. In case you need to control how the client gets initialized,  
+you can pass a block to `.client` before it's memoized:
 
 ``` ruby
 class User
