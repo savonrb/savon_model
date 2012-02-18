@@ -4,6 +4,13 @@ Savon::Model [![Build Status](https://secure.travis-ci.org/rubiii/savon_model.pn
 Model for SOAP service oriented applications.
 
 
+DEPRECATED
+----------
+
+As of v0.9.8, Savon ships with a refactored version of Savon::Model.  
+Please upgrade and use the latest version of Savon instead!
+
+
 Installation
 ------------
 
